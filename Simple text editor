@@ -1,0 +1,48 @@
+import tkinter as tk
+from tkinter import filedialog, messagebox
+
+def create_new_file():
+    new_file = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text Files", "*.txt")])
+    if new_file:
+        with open(new_file, "w") as file:
+            file.write("")
+
+def edit_file():
+    file_name = filedialog.askopenfilename(filetypes=[("Text Files", "*.txt")])
+    if file_name:
+        with open(file_name, "a") as file:
+            file_data = text_entry.get("1.0", tk.END)
+            file.write(file_data)
+
+def copy_data_to_new_file():
+    existing_file = filedialog.askopenfilename(filetypes=[("Text Files", "*.txt")])
+    if existing_file:
+        new_file = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text Files", "*.txt")])
+        if new_file:
+            with open(existing_file, "r") as old_file:
+                data = old_file.read()
+            with open(new_file, "w") as new_file_doc:
+                new_file_doc.write(data)
+
+def main():
+    root = tk.Tk()
+    root.title("Simple Text Editor")
+
+    menu_bar = tk.Menu(root)
+    root.config(menu=menu_bar)
+
+    file_menu = tk.Menu(menu_bar, tearoff=0)
+    menu_bar.add_cascade(label="File", menu=file_menu)
+    file_menu.add_command(label="Create New File", command=create_new_file)
+    file_menu.add_command(label="Edit Existing File", command=edit_file)
+    file_menu.add_command(label="Copy Data to New File", command=copy_data_to_new_file)
+    file_menu.add_separator()
+    file_menu.add_command(label="Exit", command=root.destroy)
+
+    text_entry = tk.Text(root, wrap=tk.WORD)
+    text_entry.pack(fill=tk.BOTH, expand=True)
+
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()
